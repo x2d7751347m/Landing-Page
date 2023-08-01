@@ -1,6 +1,6 @@
 package org.example.landingpage.sections
 
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import com.varabyte.kobweb.compose.css.FontStyle
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import com.varabyte.kobweb.silk.components.layout.numColumns
 import com.varabyte.kobweb.silk.components.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.components.style.toModifier
 import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
+import kotlinx.coroutines.launch
 import org.example.landingpage.components.SectionTitle
 import org.example.landingpage.components.SkillBar
 import org.example.landingpage.models.Section
@@ -26,7 +27,9 @@ import org.example.landingpage.styles.AboutTextStyle
 import org.example.landingpage.util.Constants
 import org.example.landingpage.util.Constants.LOREM_IPSUM_SHORT
 import org.example.landingpage.util.Constants.SECTION_WIDTH
+import org.example.landingpage.util.ObserveViewportEntered
 import org.example.landingpage.util.Res
+import org.example.landingpage.util.animatePercentage
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.P
@@ -82,6 +85,28 @@ fun AboutImage() {
 
 @Composable
 fun AboutMe() {
+    val scope = rememberCoroutineScope()
+    var viewportEntered by remember { mutableStateOf(false) }
+    val animatedPercentage = remember { mutableStateListOf(0, 0, 0, 0, 0) }
+    ObserveViewportEntered(
+        sectionId = Section.About.id,
+        distanceFromTop = 300.0,
+        onViewportEntered = {
+            viewportEntered = true
+            Skill.values().forEach { skill ->
+                scope.launch {
+
+                    animatePercentage(
+                        percent = skill.percentage.value.toInt(),
+                        onUpdate = {
+                            animatedPercentage[skill.ordinal] = it
+                        }
+                    )
+                }
+            }
+        }
+    )
+
     Column(
         Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center
@@ -102,8 +127,10 @@ fun AboutMe() {
         }
         Skill.values().forEach { skill ->
             SkillBar(
-                name = skill.name,
-                percentage = skill.percentage
+                name = skill.title,
+                index = skill.ordinal,
+                percentage = if (viewportEntered) skill.percentage else 0.percent,
+                animatedPercentage = if (viewportEntered) animatedPercentage[skill.ordinal] else 0
             )
         }
     }
