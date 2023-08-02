@@ -29,7 +29,7 @@ import org.example.landingpage.util.Constants.LOREM_IPSUM_SHORT
 import org.example.landingpage.util.Constants.SECTION_WIDTH
 import org.example.landingpage.util.ObserveViewportEntered
 import org.example.landingpage.util.Res
-import org.example.landingpage.util.animatePercentage
+import org.example.landingpage.util.animateNumbers
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.P
@@ -96,8 +96,8 @@ fun AboutMe() {
             Skill.values().forEach { skill ->
                 scope.launch {
 
-                    animatePercentage(
-                        percent = skill.percentage.value.toInt(),
+                    animateNumbers(
+                        number = skill.percentage.value.toInt(),
                         onUpdate = {
                             animatedPercentage[skill.ordinal] = it
                         }

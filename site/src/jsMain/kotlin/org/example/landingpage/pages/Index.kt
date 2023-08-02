@@ -7,8 +7,7 @@ import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.core.Page
-import org.example.landingpage.sections.AboutSection
-import org.example.landingpage.sections.MainSection
+import org.example.landingpage.sections.*
 
 @Page
 @Composable
@@ -20,5 +19,9 @@ fun HomePage() {
     ) {
         MainSection()
         AboutSection()
+        ServiceSection()
+        PortfolioSeciton()
+        AchievementsSection()
+        TestimonialSection()
     }
 }
