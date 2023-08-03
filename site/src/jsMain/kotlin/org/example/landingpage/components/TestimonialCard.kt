@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
-import com.varabyte.kobweb.compose.foundation.layout.Spacer
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.toAttrs
@@ -23,7 +22,7 @@ fun TestimonialCard(
     testimonial: Testimonial,
     breakpoint: Breakpoint,
 ) {
-    Row(modifier = modifier.maxWidth(450.px)) {
+    Row(modifier = modifier.maxWidth(500.px)) {
         Image(
             modifier = Modifier
                 .margin(right = 20.px)
@@ -41,7 +40,7 @@ fun TestimonialCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .margin(bottom = 20.px)
+                    .margin(bottom = 10.px)
             ) {
                 Column {
                     P(
@@ -68,13 +67,8 @@ fun TestimonialCard(
                     ) {
                         Text(testimonial.profession)
                     }
-                    if (breakpoint < Breakpoint.MD) {
-                        RatingBar(modifier = Modifier.margin(top = 10.px))
-                    }
-                }
-                if (breakpoint >= Breakpoint.MD) {
-                    Spacer()
-                    RatingBar()
+                    RatingBar(modifier = Modifier.margin(top = 5.px))
+
                 }
             }
             P(
