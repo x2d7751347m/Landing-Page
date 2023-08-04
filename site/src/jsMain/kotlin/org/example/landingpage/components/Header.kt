@@ -1,6 +1,7 @@
 package org.example.landingpage.components
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.TextDecorationLine
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -25,33 +26,44 @@ import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 
 @Composable
-fun Header() {
+fun Header(onMenuClicked: () -> Unit) {
     val breakpoint = rememberBreakpoint()
-    Row (
+    Row(
         modifier = Modifier
             .fillMaxWidth(if (breakpoint > Breakpoint.MD) 80.percent else 90.percent)
             .margin(topBottom = 50.px),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
-    ){
-        LeftSide(breakpoint = breakpoint)
-        if(breakpoint > Breakpoint.MD) {
-        RightSide()
+    ) {
+        LeftSide(
+            breakpoint = breakpoint,
+            onMenuClicked = onMenuClicked
+        )
+        if (breakpoint > Breakpoint.MD) {
+            RightSide()
         }
     }
 }
 
 @Composable
-fun LeftSide(breakpoint: Breakpoint) {
+fun LeftSide(
+    breakpoint: Breakpoint,
+    onMenuClicked: () -> Unit,
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         if (breakpoint <= Breakpoint.MD) {
             FaBars(
-                modifier = Modifier.margin(right = 15.px),
+                modifier = Modifier
+                    .margin(right = 15.px)
+                    .onClick {
+                        onMenuClicked()
+                    },
                 size = IconSize.XL
             )
         }
         Image(
-            modifier = LogoStyle.toModifier(),
+            modifier = LogoStyle.toModifier()
+                .cursor(Cursor.Pointer),
             src = Res.Image.logo,
             desc = "Logo Image",
         )
@@ -60,13 +72,13 @@ fun LeftSide(breakpoint: Breakpoint) {
 
 @Composable
 fun RightSide() {
-    Row (
+    Row(
         modifier = Modifier.fillMaxWidth()
             .borderRadius(r = 50.px)
             .backgroundColor(Theme.LighterGray.rgb)
             .padding(all = 20.px),
         horizontalArrangement = Arrangement.End
-    ){
+    ) {
         Section.values().take(6).forEach { section ->
             Link(
                 modifier = NavigationItemStyle.toModifier()
